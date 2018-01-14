@@ -83,12 +83,6 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
       '#description' => $this->t('You need to first create an Amazon app at <a href="@amazon-dev">@amazon-dev</a> by signing in and clicking on "Register New Application"', ['@amazon-dev' => 'https://login.amazon.com/manageApps']),
     ];
 
-    $form['domain_settings'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Domain settings'),
-      '#open' => FALSE,
-    ];
-
     $form['amazon_settings']['client_id'] = [
       '#type' => 'textfield',
       '#required' => TRUE,
@@ -125,7 +119,7 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
       '#type' => 'textarea',
       '#title' => $this->t('Scopes for API call'),
       '#default_value' => $config->get('scopes'),
-      '#description' => $this->t('Define the requested scopes to make API calls.'),
+      '#description' => $this->t('Define the requested scopes to make API calls, separated by a space. See the <a href="https://developer.amazon.com/docs/login-with-amazon/customer-profile.html">LWA API Guide</a> for a full list of scopes and their description.'),
     ];
 
     $form['amazon_settings']['api_calls'] = [
@@ -133,14 +127,6 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
       '#title' => $this->t('API calls to be made to collect data'),
       '#default_value' => $config->get('api_calls'),
       '#description' => $this->t('Define the API calls which will retrieve data from provider.'),
-    ];
-
-    $form['domain_settings']['restricted_domain'] = [
-      '#type' => 'textfield',
-      '#required' => FALSE,
-      '#title' => $this->t('Restricted Domain'),
-      '#default_value' => $config->get('restricted_domain'),
-      '#description' => $this->t('If you want to restrict the users to a specific domain, insert your domain here. For example mycollege.edu. Note that this works only for Amazon Apps hosted accounts. Leave this blank if you are not sure what this is.'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -177,7 +163,6 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
       ->set('client_secret', trim($values['client_secret']))
       ->set('scopes', $values['scopes'])
       ->set('api_calls', $values['api_calls'])
-      ->set('restricted_domain', $values['restricted_domain'])
       ->save();
 
     parent::submitForm($form, $form_state);

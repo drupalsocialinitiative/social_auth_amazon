@@ -14,6 +14,4 @@ social_auth_amazon.settings:
     api_calls:
       type: string
       label: 'API calls which will retrieve data'
-    restricted_domain:
-      type: string
-      label: 'Restricted Domain'
+

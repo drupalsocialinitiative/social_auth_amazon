@@ -50,14 +50,4 @@ class AmazonAuthSettings extends SettingsBase implements AmazonAuthSettingsInter
     return $this->clientSecret;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getRestrictedDomain() {
-    if (!$this->restrictedDomain) {
-      $this->restrictedDomain = $this->config->get('restricted_domain');
-    }
-    return $this->restrictedDomain;
-  }
-
 }
