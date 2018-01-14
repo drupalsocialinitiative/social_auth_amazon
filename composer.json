@@ -11,7 +11,7 @@
         "source": "http://cgit.drupalcode.org/social_auth_amazon"
     },
     "require": {
-        "luchianenco/oauth2-amazon": "^2.0"
+        "luchianenco/oauth2-amazon": "^1.1"
     },
     "authors": [
         {

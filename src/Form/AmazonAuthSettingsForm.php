@@ -149,6 +149,27 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    // Convert the string of space-separated scopes into an array.
+    $scopes = explode(" ", $form_state->getValue('scopes'));
+
+    // Define the list of valid scopes.
+    $valid_scopes = ['profile', 'profile:user_id', 'postal_code'];
+
+    // Check if input contains any invalid scopes.
+    for ($i = 0; $i < count($scopes); $i++) {
+      if (!in_array($scopes[$i], $valid_scopes, TRUE)) {
+        $contains_invalid_scope = TRUE;
+      }
+    }
+    if (isset($contains_invalid_scope)) {
+      $form_state->setErrorByName('scope', t('You have entered an invalid scope. Please check and try again.'));
+    }
+  }
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $this->config('social_auth_amazon.settings')
