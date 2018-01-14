@@ -160,7 +160,7 @@ class AmazonAuthManager extends OAuth2Manager {
    *   Absolute Amazon login URL where user will be redirected.
    */
   public function getAmazonLoginUrl() {
-    $scopes = getScopes();
+    $scopes = $this->getScopes();
 
     $login_url = $this->client->getAuthorizationUrl([
       'scope' => $scopes,
