@@ -112,7 +112,7 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
       '#disabled' => TRUE,
       '#title' => $this->t('Authorized Javascript Origin'),
       '#description' => $this->t('Copy this value to <em>Authorized Javascript Origins</em> field of your Amazon App settings.'),
-      '#default_value' => $GLOBALS['base_url'],
+      '#default_value' => $this->requestContext->getHost(),
     ];
 
     $form['amazon_settings']['scopes'] = [
@@ -141,7 +141,7 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
     $scopes = explode(" ", $form_state->getValue('scopes'));
 
     // Define the list of valid scopes.
-    $valid_scopes = ['profile', 'profile:user_id', 'postal_code'];
+    $valid_scopes = ['', 'profile', 'profile:user_id', 'postal_code'];
 
     // Check if input contains any invalid scopes.
     for ($i = 0; $i < count($scopes); $i++) {
