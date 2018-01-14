@@ -22,4 +22,4 @@ social_auth_amazon.settings_form:
     _title: 'Social Auth Amazon settings'
     _form: '\Drupal\social_auth_amazon\Form\AmazonAuthSettingsForm'
   requirements:
-_permission: 'administer social api authentication'
+    _permission: 'administer social api authentication'
