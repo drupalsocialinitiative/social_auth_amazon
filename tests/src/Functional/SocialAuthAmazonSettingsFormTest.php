@@ -5,7 +5,7 @@ namespace Drupal\Tests\social_auth_amazon\Functional;
 use Drupal\social_api\SocialApiSettingsFormBaseTest;
 
 /**
- * Test Social Auth Amazon module functionality of settings' forms.
+ * Test Social Auth Amazon settings form functionality.
  *
  * @group social_auth
  *

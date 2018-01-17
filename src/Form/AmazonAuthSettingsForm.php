@@ -153,6 +153,7 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
       $form_state->setErrorByName('scope', t('You have entered an invalid scope. Please check and try again.'));
     }
   }
+
   /**
    * {@inheritdoc}
    */

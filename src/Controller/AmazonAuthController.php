@@ -10,7 +10,6 @@ use Drupal\social_auth_amazon\AmazonAuthManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 
 /**
  * Returns responses for Social Auth Amazon module routes.

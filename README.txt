@@ -89,4 +89,3 @@ MAINTAINERS
 Current maintainers:
  * Kifah Meeran (kifah-meeran) - https://www.drupal.org/u/kifah-meeran
  * Getulio Sánchez (gvso) - https://www.drupal.org/u/gvso
-
