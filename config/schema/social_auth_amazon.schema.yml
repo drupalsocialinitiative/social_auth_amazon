@@ -8,9 +8,3 @@ social_auth_amazon.settings:
     client_secret:
       type: string
       label: 'Client Secret'
-    scopes:
-      type: string
-      label: 'Scopes to make API calls'
-    api_calls:
-      type: string
-      label: 'API calls which will retrieve data'

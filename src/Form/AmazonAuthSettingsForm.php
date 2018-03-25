@@ -102,31 +102,9 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
     $form['amazon_settings']['authorized_redirect_url'] = [
       '#type' => 'textfield',
       '#disabled' => TRUE,
-      '#title' => $this->t('Authorized redirect URIs'),
-      '#description' => $this->t('Copy this value to <em>Authorized redirect URIs</em> field of your Amazon App settings.'),
+      '#title' => $this->t('Authorized Return URL'),
+      '#description' => $this->t('Copy this value to <em>Authorized Return URLs</em> field of your Amazon App settings.'),
       '#default_value' => $GLOBALS['base_url'] . '/user/login/amazon/callback',
-    ];
-
-    $form['amazon_settings']['authorized_javascript_origin'] = [
-      '#type' => 'textfield',
-      '#disabled' => TRUE,
-      '#title' => $this->t('Authorized Javascript Origin'),
-      '#description' => $this->t('Copy this value to <em>Authorized Javascript Origins</em> field of your Amazon App settings.'),
-      '#default_value' => $this->requestContext->getHost(),
-    ];
-
-    $form['amazon_settings']['scopes'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Scopes for API call'),
-      '#default_value' => $config->get('scopes'),
-      '#description' => $this->t('Define the requested scopes to make API calls, separated by a space. See the <a href="https://developer.amazon.com/docs/login-with-amazon/customer-profile.html">LWA API Guide</a> for a full list of scopes and their description.'),
-    ];
-
-    $form['amazon_settings']['api_calls'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('API calls to be made to collect data'),
-      '#default_value' => $config->get('api_calls'),
-      '#description' => $this->t('Define the API calls which will retrieve data from provider.'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -162,8 +140,6 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
     $this->config('social_auth_amazon.settings')
       ->set('client_id', trim($values['client_id']))
       ->set('client_secret', trim($values['client_secret']))
-      ->set('scopes', $values['scopes'])
-      ->set('api_calls', $values['api_calls'])
       ->save();
 
     parent::submitForm($form, $form_state);

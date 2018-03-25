@@ -125,7 +125,7 @@ class AmazonAuthController extends ControllerBase {
     // Generates the URL where the user will be redirected for Amazon login.
     // If the user did not have email permission granted on previous attempt,
     // we use the re-request URL requesting only the email address.
-    $amazon_login_url = $this->amazonManager->getAmazonLoginUrl();
+    $amazon_login_url = $this->amazonManager->getAuthorizationUrl();
 
     $state = $this->amazonManager->getState();
 
@@ -172,27 +172,13 @@ class AmazonAuthController extends ControllerBase {
     $this->amazonManager->setClient($amazon)->authenticate();
 
     // Gets user's info from Amazon API.
-    if (!$amazon_profile = $this->amazonManager->getUserInfo()) {
+    if (!$profile = $this->amazonManager->getUserInfo()) {
       drupal_set_message($this->t('Amazon login failed, could not load Amazon profile. Contact site administrator.'), 'error');
       return $this->redirect('user.login');
     }
 
-    // Store the data mapped with data points define is
-    // social_auth_amazon settings.
-    $data = [];
-
-    if (!$this->userManager->checkIfUserExists($amazon_profile->getId())) {
-      $api_calls = explode(PHP_EOL, $this->amazonManager->getApiCalls());
-
-      // Iterate through api calls define in settings and try to retrieve them.
-      foreach ($api_calls as $api_call) {
-
-        $call = $this->amazonManager->getExtraDetails($api_call);
-        array_push($data, $call);
-      }
-    }
     // If user information could be retrieved.
-    return $this->userManager->authenticateUser($amazon_profile->getName(), $amazon_profile->getEmail(), $amazon_profile->getId(), $this->amazonManager->getAccessToken(), json_encode($data));
+    return $this->userManager->authenticateUser($profile->getName(), $profile->getEmail(), $profile->getId(), $this->amazonManager->getAccessToken());
   }
 
 }
