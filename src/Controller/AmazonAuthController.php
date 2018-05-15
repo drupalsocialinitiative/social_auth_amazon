@@ -122,9 +122,7 @@ class AmazonAuthController extends ControllerBase {
     // Amazon service was returned, inject it to $amazonManager.
     $this->amazonManager->setClient($amazon);
 
-    // Generates the URL where the user will be redirected for Amazon login.
-    // If the user did not have email permission granted on previous attempt,
-    // we use the re-request URL requesting only the email address.
+    // Generates the URL where the user will be redirected for authentication.
     $amazon_login_url = $this->amazonManager->getAuthorizationUrl();
 
     $state = $this->amazonManager->getState();
@@ -166,10 +164,10 @@ class AmazonAuthController extends ControllerBase {
       return $this->redirect('user.login');
     }
 
+    $this->amazonManager->setClient($amazon)->authenticate();
+
     // Saves access token to session.
     $this->dataHandler->set('access_token', $this->amazonManager->getAccessToken());
-
-    $this->amazonManager->setClient($amazon)->authenticate();
 
     // Gets user's info from Amazon API.
     if (!$profile = $this->amazonManager->getUserInfo()) {
