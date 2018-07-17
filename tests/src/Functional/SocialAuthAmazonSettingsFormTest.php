@@ -2,16 +2,17 @@
 
 namespace Drupal\Tests\social_auth_amazon\Functional;
 
-use Drupal\social_api\SocialApiSettingsFormBaseTest;
+use Drupal\Tests\social_auth\Functional\SocialAuthTestBase;
 
 /**
- * Test Social Auth Amazon settings form functionality.
+ * Test Social Auth Amazon settings form.
  *
  * @group social_auth
  *
  * @ingroup social_auth_amazon
  */
-class SocialAuthAmazonSettingsFormTest extends SocialApiSettingsFormBaseTest {
+class SocialAuthAmazonSettingsFormTest extends SocialAuthTestBase {
+
   /**
    * Modules to enable.
    *
@@ -24,23 +25,33 @@ class SocialAuthAmazonSettingsFormTest extends SocialApiSettingsFormBaseTest {
    */
   protected function setUp() {
     $this->module = 'social_auth_amazon';
-    $this->socialNetwork = 'amazon';
+    $this->provider = 'amazon';
     $this->moduleType = 'social-auth';
 
     parent::setUp();
   }
 
   /**
-   * {@inheritdoc}
+   * Test if implementer is shown in the integration list.
    */
   public function testIsAvailableInIntegrationList() {
     $this->fields = ['client_id', 'client_secret'];
 
-    parent::testIsAvailableInIntegrationList();
+    $this->checkIsAvailableInIntegrationList();
   }
 
   /**
-   * {@inheritdoc}
+   * Test if permissions are set correctly for settings page.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testPermissionForSettingsPage() {
+    $this->checkPermissionForSettingsPage();
+  }
+
+  /**
+   * Test settings form submission.
    */
   public function testSettingsFormSubmission() {
     $this->edit = [
@@ -48,7 +59,7 @@ class SocialAuthAmazonSettingsFormTest extends SocialApiSettingsFormBaseTest {
       'client_secret' => $this->randomString(10),
     ];
 
-    parent::testSettingsFormSubmission();
+    $this->checkSettingsFormSubmission();
   }
 
 }
