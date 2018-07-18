@@ -99,11 +99,11 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
       '#description' => $this->t('Copy the Client Secret here.'),
     ];
 
-    $form['amazon_settings']['authorized_redirect_url'] = [
+    $form['amazon_settings']['allowed_return_url'] = [
       '#type' => 'textfield',
       '#disabled' => TRUE,
-      '#title' => $this->t('Authorized Return URL'),
-      '#description' => $this->t('Copy this value to <em>Authorized Return URLs</em> field of your Amazon App settings.'),
+      '#title' => $this->t('Allowed Return URL'),
+      '#description' => $this->t('Copy this value to <em>Allowed Return URLs</em> field of your Amazon App settings.'),
       '#default_value' => $GLOBALS['base_url'] . '/user/login/amazon/callback',
     ];
 

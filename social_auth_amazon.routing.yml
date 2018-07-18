@@ -1,7 +1,7 @@
 social_auth_amazon.redirect_to_amazon:
   path: 'user/login/amazon'
   defaults:
-    _controller: '\Drupal\social_auth_amazon\Controller\AmazonAuthController::redirectToAmazon'
+    _controller: '\Drupal\social_auth_amazon\Controller\AmazonAuthController::redirectToProvider'
   requirements:
     # Anonymous users can log in, but authenticated users can also associate a new provider
     _access: 'TRUE'
