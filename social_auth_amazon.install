@@ -11,9 +11,8 @@ use Drupal\social_auth\Controller\SocialAuthController;
 /**
  * Implements hook_requirements().
  *
- * Checks that a compatible version of oAuth2 Amazon library for the
- * league OAuth2 client with Composer. Check installation instructions
- * from the README.txt.
+ * Checks that a compatible version of PHP League OAuth2 Amazon library is
+ * available. Check installation instructions in README.txt.
  */
 function social_auth_amazon_requirements($phase) {
 

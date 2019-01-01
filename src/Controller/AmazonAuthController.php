@@ -64,7 +64,7 @@ class AmazonAuthController extends OAuth2ControllerBase {
   public function callback() {
     // Checks if authentication failed.
     if ($this->request->getCurrentRequest()->query->has('error')) {
-      $this->messenger->addError('You could not be authenticated.');
+      $this->messenger->addError($this->t('You could not be authenticated.'));
 
       return $this->redirect('user.login');
     }
