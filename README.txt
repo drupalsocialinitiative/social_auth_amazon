@@ -9,6 +9,7 @@ CONTENTS OF THIS FILE
  * Support requests
  * Maintainers
 
+
 INTRODUCTION
 ------------
 
@@ -18,7 +19,8 @@ based on the Social Auth and Social API projects
 It adds to the site:
  * A new url: /user/login/amazon.
  * A settings form on /admin/config/social-api/social-auth/amazon page.
- * A Amazon Logo in the Social Auth Login block, which has 9 different styles.
+ * A Amazon logo in the Social Auth Login block.
+
 
 REQUIREMENTS
 ------------
@@ -27,6 +29,7 @@ This module requires the following modules:
 
  * Social Auth (https://drupal.org/project/social_auth)
  * Social API (https://drupal.org/project/social_api)
+
 
 INSTALLATION
 ------------
@@ -41,7 +44,8 @@ INSTALLATION
    for further information.
 
  * A more comprehensive installation instruction for Drupal 8 can be found at
-   https://www.drupal.org/node/2935878
+   https://www.drupal.org/docs/8/modules/social-api/social-api-2x/social-auth-2x/social-auth-amazon-2x-installation
+
 
 CONFIGURATION
 -------------
@@ -57,31 +61,33 @@ CONFIGURATION
 HOW IT WORKS
 ------------
 
-User can click on the Amazon logo on the Social Auth Login block
+The user can click on the Amazon logo on the Social Auth Login block
 You can also add a button or link anywhere on the site that points
 to /user/login/amazon, so theming and customizing the button or link
 is very flexible.
 
-When the user opens the /user/login/amazon link, it automatically takes
-user to Amazon for authentication. Amazon then returns the user to
-Drupal site. If we have an existing Drupal user with the same email address
-provided by Amazon, that user is logged in. Otherwise a new Drupal user is
-created.
+After Amazon has returned the user to your site, the module compares the user id
+or email address provided by Amazon. If your site already has an account with
+the same email address or the user has previously registered using Amazon, the
+user is logged in. If not, a new user account is created. Also, an Amazon
+account can be associated with an authenticated user.
+
 
 SUPPORT REQUESTS
 ----------------
 
-Before posting a support request, carefully read the installation
-instructions provided in module documentation page.
+ * Before posting a support request, carefully read the installation
+   instructions provided in module documentation page.
 
-Before posting a support request, check Recent log entries at
-admin/reports/dblog
+ * Before posting a support request, check Recent log entries at
+   admin/reports/dblog
 
-Once you have done this, you can post a support request at module issue queue:
-https://www.drupal.org/project/issues/social_auth_amazon
+ * Once you have done this, you can post a support request at module issue
+   queue: https://www.drupal.org/project/issues/social_auth_amazon
 
-When posting a support request, please inform if you were able to see any errors
-in Recent log entries.
+ * When posting a support request, please inform if you were able to see any
+   errors in the Recent Log entries.
+
 
 MAINTAINERS
 -----------

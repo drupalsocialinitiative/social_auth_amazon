@@ -110,7 +110,7 @@ class AmazonAuth extends NetworkBase implements AmazonAuthInterface {
   /**
    * Sets the underlying SDK library.
    *
-   * @return \Luchianenco\OAuth2\Client\Provider\Amazon
+   * @return \Luchianenco\OAuth2\Client\Provider\Amazon|false
    *   The initialized 3rd party library instance.
    *
    * @throws SocialApiException
@@ -145,6 +145,7 @@ class AmazonAuth extends NetworkBase implements AmazonAuthInterface {
 
       return new Amazon($league_settings);
     }
+
     return FALSE;
   }
 
