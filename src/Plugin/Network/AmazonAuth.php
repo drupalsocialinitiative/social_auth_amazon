@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Routing\RequestContext;
+use Drupal\Core\Url;
 use Drupal\social_api\Plugin\NetworkBase;
 use Drupal\social_api\SocialApiException;
 use Drupal\social_auth_amazon\Settings\AmazonAuthSettings;
@@ -65,7 +66,6 @@ class AmazonAuth extends NetworkBase implements AmazonAuthInterface {
       $container->get('entity_type.manager'),
       $container->get('config.factory'),
       $container->get('logger.factory'),
-      $container->get('router.request_context'),
       $container->get('settings')
     );
   }
@@ -85,10 +85,8 @@ class AmazonAuth extends NetworkBase implements AmazonAuthInterface {
    *   The configuration factory object.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   The logger factory.
-   * @param \Drupal\Core\Routing\RequestContext $requestContext
-   *   The Request Context Object.
    * @param \Drupal\Core\Site\Settings $settings
-   *   The settings factory.
+   *   The site settings.
    */
   public function __construct(array $configuration,
                               $plugin_id,
@@ -96,14 +94,11 @@ class AmazonAuth extends NetworkBase implements AmazonAuthInterface {
                               EntityTypeManagerInterface $entity_type_manager,
                               ConfigFactoryInterface $config_factory,
                               LoggerChannelFactoryInterface $logger_factory,
-                              RequestContext $requestContext,
-                              Settings $settings
-  ) {
+                              Settings $settings) {
 
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $config_factory);
 
     $this->loggerFactory = $logger_factory;
-    $this->requestContext = $requestContext;
     $this->siteSettings = $settings;
   }
 
@@ -122,6 +117,7 @@ class AmazonAuth extends NetworkBase implements AmazonAuthInterface {
     if (!class_exists($class_name)) {
       throw new SocialApiException(sprintf('The Amazon Library for the league oAuth not found. Class: %s.', $class_name));
     }
+
     /* @var \Drupal\social_auth_amazon\Settings\AmazonAuthSettings $settings */
     $settings = $this->settings;
 
@@ -130,13 +126,13 @@ class AmazonAuth extends NetworkBase implements AmazonAuthInterface {
       $league_settings = [
         'clientId' => $settings->getClientId(),
         'clientSecret' => $settings->getClientSecret(),
-        'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/amazon/callback',
+        'redirectUri' => Url::fromRoute('social_auth_amazon.callback')->setAbsolute()->toString(),
         'accessType' => 'offline',
         'verify' => FALSE,
       ];
 
       // Proxy configuration data for outward proxy.
-      $proxyUrl = $this->siteSettings->get("http_client_config")["proxy"]["http"];
+      $proxyUrl = $this->siteSettings->get('http_client_config')['proxy']['http'];
       if ($proxyUrl) {
         $league_settings = [
           'proxy' => $proxyUrl,

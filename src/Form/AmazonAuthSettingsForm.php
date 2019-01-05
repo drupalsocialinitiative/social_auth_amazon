@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Routing\RequestContext;
 use Drupal\Core\Routing\RouteProviderInterface;
+use Drupal\Core\Url;
 use Drupal\social_auth\Form\SocialAuthSettingsForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -104,7 +105,7 @@ class AmazonAuthSettingsForm extends SocialAuthSettingsForm {
       '#disabled' => TRUE,
       '#title' => $this->t('Allowed Return URL'),
       '#description' => $this->t('Copy this value to <em>Allowed Return URLs</em> field of your Amazon App settings.'),
-      '#default_value' => $GLOBALS['base_url'] . '/user/login/amazon/callback',
+      '#default_value' => Url::fromRoute('social_auth_amazon.callback')->setAbsolute()->toString(),
     ];
 
     return parent::buildForm($form, $form_state);
