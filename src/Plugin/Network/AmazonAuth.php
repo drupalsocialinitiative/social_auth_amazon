@@ -5,7 +5,6 @@ namespace Drupal\social_auth_amazon\Plugin\Network;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\Core\Routing\RequestContext;
 use Drupal\Core\Url;
 use Drupal\social_api\Plugin\NetworkBase;
 use Drupal\social_api\SocialApiException;
@@ -33,20 +32,12 @@ use Drupal\Core\Site\Settings;
  */
 class AmazonAuth extends NetworkBase implements AmazonAuthInterface {
 
-
   /**
    * The logger factory.
    *
    * @var \Drupal\Core\Logger\LoggerChannelFactory
    */
   protected $loggerFactory;
-
-  /**
-   * The request context object.
-   *
-   * @var \Drupal\Core\Routing\RequestContext
-   */
-  protected $requestContext;
 
   /**
    * The site settings.
