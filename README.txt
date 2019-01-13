@@ -18,7 +18,7 @@ based on the Social Auth and Social API projects
 
 It adds to the site:
  * A new url: /user/login/amazon.
- * A settings form on /admin/config/social-api/social-auth/amazon page.
+ * A settings form at /admin/config/social-api/social-auth/amazon.
  * A Amazon logo in the Social Auth Login block.
 
 
@@ -35,7 +35,7 @@ INSTALLATION
 ------------
 
  * Run composer to install the dependencies.
-   composer require "drupal/social_auth_amazon:~2.0"
+   composer require "drupal/social_auth_amazon:^2.0"
 
  * Install the dependencies: Social API and Social Auth.
 
