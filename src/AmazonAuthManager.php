@@ -2,11 +2,13 @@
 
 namespace Drupal\social_auth_amazon;
 
-use Drupal\social_auth\AuthManager\OAuth2Manager;
 use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\social_auth\AuthManager\OAuth2Manager;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 
 /**
- * Contains all the logic for Amazon login integration.
+ * Contains all the logic for Amazon OAuth2 authentication.
  */
 class AmazonAuthManager extends OAuth2Manager {
 
@@ -15,24 +17,35 @@ class AmazonAuthManager extends OAuth2Manager {
    *
    * @param \Drupal\Core\Config\ConfigFactory $configFactory
    *   Used for accessing configuration object factory.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
+   *   The logger factory.
    */
-  public function __construct(ConfigFactory $configFactory) {
-    parent::__construct($configFactory->get('social_auth_amazon.settings'));
+  public function __construct(ConfigFactory $configFactory, LoggerChannelFactoryInterface $logger_factory) {
+    parent::__construct($configFactory->get('social_auth_amazon.settings'), $logger_factory);
   }
 
   /**
    * Authenticates the users by using the access token.
    */
   public function authenticate() {
-    $this->setAccessToken($this->client->getAccessToken('authorization_code',
-      ['code' => $_GET['code']]));
+    try {
+      $this->setAccessToken($this->client->getAccessToken('authorization_code',
+        ['code' => $_GET['code']]));
+    }
+    catch (IdentityProviderException $e) {
+      $this->loggerFactory->get('social_auth_amazon')
+        ->error('There was an error during authentication. Exception: ' . $e->getMessage());
+    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function getUserInfo() {
-    $this->user = $this->client->getResourceOwner($this->getAccessToken());
+    if (!$this->user) {
+      $this->user = $this->client->getResourceOwner($this->getAccessToken());
+    }
+
     return $this->user;
   }
 
@@ -45,12 +58,7 @@ class AmazonAuthManager extends OAuth2Manager {
 
     $extra_scopes = $this->getScopes();
     if ($extra_scopes) {
-      if (strpos($extra_scopes, ',')) {
-        $scopes = array_merge($scopes, explode(',', $extra_scopes));
-      }
-      else {
-        $scopes[] = $extra_scopes;
-      }
+      $scopes = array_merge($scopes, explode(',', $extra_scopes));
     }
 
     // Returns the URL where user will be redirected.
@@ -62,7 +70,7 @@ class AmazonAuthManager extends OAuth2Manager {
   /**
    * {@inheritdoc}
    */
-  public function requestEndPoint($path) {
+  public function requestEndPoint($method, $path, $domain = NULL, array $options = []) {
     // Amazon offers only 'login with' services.
   }
 
@@ -70,10 +78,7 @@ class AmazonAuthManager extends OAuth2Manager {
    * {@inheritdoc}
    */
   public function getState() {
-    $state = $this->client->getState();
-
-    // Generate and return the URL where we should redirect the user.
-    return $state;
+    return $this->client->getState();
   }
 
 }
