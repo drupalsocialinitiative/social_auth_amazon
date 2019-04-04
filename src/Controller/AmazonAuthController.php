@@ -3,6 +3,7 @@
 namespace Drupal\social_auth_amazon\Controller;
 
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\social_api\Plugin\NetworkManager;
 use Drupal\social_auth\Controller\OAuth2ControllerBase;
 use Drupal\social_auth\SocialAuthDataHandler;
@@ -23,7 +24,7 @@ class AmazonAuthController extends OAuth2ControllerBase {
    *   The messenger service.
    * @param \Drupal\social_api\Plugin\NetworkManager $network_manager
    *   Used to get an instance of social_auth_amazon network plugin.
-   * @param \Drupal\social_auth\User\UserAuthenticator $user_authentitcator
+   * @param \Drupal\social_auth\User\UserAuthenticator $user_authenticator
    *   Manages user login/registration.
    * @param \Drupal\social_auth_amazon\AmazonAuthManager $amazon_manager
    *   Used to manage authentication methods.
@@ -31,15 +32,20 @@ class AmazonAuthController extends OAuth2ControllerBase {
    *   Used to access GET parameters.
    * @param \Drupal\social_auth\SocialAuthDataHandler $data_handler
    *   The Social Auth data handler.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   Used to handle metadata for redirection to authentication URL.
    */
   public function __construct(MessengerInterface $messenger,
                               NetworkManager $network_manager,
-                              UserAuthenticator $user_authentitcator,
+                              UserAuthenticator $user_authenticator,
                               AmazonAuthManager $amazon_manager,
                               RequestStack $request,
-                              SocialAuthDataHandler $data_handler) {
+                              SocialAuthDataHandler $data_handler,
+                              RendererInterface $renderer) {
 
-    parent::__construct('Social Auth Amazon', 'social_auth_amazon', $messenger, $network_manager, $user_authentitcator, $amazon_manager, $request, $data_handler);
+    parent::__construct('Social Auth Amazon', 'social_auth_amazon',
+                        $messenger, $network_manager, $user_authenticator,
+                        $amazon_manager, $request, $data_handler, $renderer);
   }
 
   /**
@@ -52,7 +58,8 @@ class AmazonAuthController extends OAuth2ControllerBase {
       $container->get('social_auth.user_authenticator'),
       $container->get('social_auth_amazon.manager'),
       $container->get('request_stack'),
-      $container->get('social_auth.data_handler')
+      $container->get('social_auth.data_handler'),
+      $container->get('renderer')
     );
   }
 
@@ -75,7 +82,10 @@ class AmazonAuthController extends OAuth2ControllerBase {
     // If authentication was successful.
     if ($profile !== NULL) {
 
-      return $this->userAuthenticator->authenticateUser($profile->getName(), $profile->getEmail(), $profile->getId(), $this->providerManager->getAccessToken());
+      return $this->userAuthenticator->authenticateUser($profile->getName(),
+                                                        $profile->getEmail(),
+                                                        $profile->getId(),
+                                                        $this->providerManager->getAccessToken());
     }
 
     return $this->redirect('user.login');
