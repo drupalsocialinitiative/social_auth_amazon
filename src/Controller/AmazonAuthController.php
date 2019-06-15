@@ -69,18 +69,11 @@ class AmazonAuthController extends OAuth2ControllerBase {
    * Amazon returns the user here after user has authenticated.
    */
   public function callback() {
-    $request_query = $this->request->getCurrentRequest()->query;
 
-    // Checks if authentication failed.
-    if ($request_query->has('error')) {
-      $this->messenger->addError($this->t('You could not be authenticated.'));
-
-      $response = $this->userAuthenticator->dispatchAuthenticationError($request_query->get('error'));
-      if ($response) {
-        return $response;
-      }
-
-      return $this->redirect('user.login');
+    // Checks if there was an authentication error.
+    $redirect = $this->checkAuthError();
+    if ($redirect) {
+      return $redirect;
     }
 
     /* @var \Luchianenco\OAuth2\Client\Provider\AmazonResourceOwner|null $profile */
